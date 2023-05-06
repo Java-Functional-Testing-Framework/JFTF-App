@@ -1,4 +1,4 @@
-import { fetchUtils, Admin, Resource, ListGuesser } from "react-admin";
+import { Admin, Resource } from "react-admin";
 import JFTFRestProvider from './data-providers/jftf-rest-server.ts';
 import {authProvider} from "./auth-providers/jftf-auth-provider.ts";
 import {fetchJsonWithAuthToken} from 'ra-data-django-rest-framework';

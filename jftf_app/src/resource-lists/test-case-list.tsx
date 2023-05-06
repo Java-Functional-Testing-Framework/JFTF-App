@@ -1,6 +1,6 @@
 import {BooleanField, Datagrid, DateField, List, TextField, ShowButton} from 'react-admin';
 
-const CommentShowButton = () => <ShowButton label="Show test case metadata" />;
+const CommentShowButton = (props) => <ShowButton label="Show test case metadata" />;
 
 
 export const TestCaseAdminList = () => (
