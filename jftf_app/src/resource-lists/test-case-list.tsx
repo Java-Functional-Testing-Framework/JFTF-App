@@ -1,4 +1,5 @@
 import {BooleanField, Datagrid, DateField, List, TextField, ShowButton} from 'react-admin';
+import ExecuteTestCaseButton from "../components/ExecuteTestCaseButton";
 
 const TestCaseMetadataShowButton = (props) => <ShowButton label="Show test case metadata"/>;
 
@@ -11,6 +12,7 @@ export const TestCaseAdminList = () => (
             <DateField source="lastExecution"/>
             <BooleanField source="executed"/>
             <TestCaseMetadataShowButton label={"Test case metadata"}/>
+            <ExecuteTestCaseButton label={"Execute test application"}/>
         </Datagrid>
     </List>
 );

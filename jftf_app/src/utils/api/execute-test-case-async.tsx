@@ -25,10 +25,10 @@ export async function executeTestCase(id: number, runner: string): Promise<strin
 
         // Extract the task ID from the response
         const taskID: string = response.data.task_id;
-        toast.success(`Test case execution successful: task_id is '${taskID}'`);
+        toast.success(`Test application with ID '${id}' execution successful: 'task_id' is '${taskID}'`);
 
         return taskID;
     } catch (error) {
-        toast.error(`Error executing test case with id '${id}': ${error.response?.data.error || error.message}`);
+        toast.error(`Error executing test application with id '${id}': ${error.response?.data.error || error.message}`);
     }
 }
