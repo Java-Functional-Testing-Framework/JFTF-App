@@ -26,7 +26,7 @@ export async function executeTestCase(id: number, test_case_name: string, runner
 
         // Extract the task ID from the response
         const taskID: string = response.data.task_id;
-        toast.success(`Test application with name '${test_case_name}' execution successful: 'task_id' is '${taskID}'`);
+        toast.success(`Test application with name '${test_case_name}' execution started: Task ID is '${taskID}'`);
         enqueueTask(taskID, test_case_name);
 
         return taskID;

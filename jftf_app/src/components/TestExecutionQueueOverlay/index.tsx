@@ -4,6 +4,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Fab from '@mui/material/Fab';
 import {Theme} from '@mui/material/styles';
 import {KeyboardArrowUp, KeyboardArrowDown} from '@mui/icons-material';
+import {
+    getTestApplicationExecutionTaskStatus
+} from "../../utils/api/get-test-application-execution-task-status-async.tsx";
+import {toast} from "react-toastify";
 
 const Overlay = styled('div')(({theme}) => ({
     position: 'fixed',
@@ -72,11 +76,19 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
     useEffect(() => {
         const checkTaskStatus = async () => {
             for (const task of localTaskQueue) {
-                console.log(task.id, task.name);
+                const taskStatus = await getTestApplicationExecutionTaskStatus(task.id);
+
+                if (taskStatus === 'SUCCESS') {
+                    dequeueTask(task.id);
+                    toast.success(`Test application execution task '${task.name}' (${task.id}) completed successfully.`);
+                } else if (taskStatus === 'FAILURE') {
+                    dequeueTask(task.id);
+                    toast.error(`Test application execution task '${task.name}' (${task.id}) failed.`);
+                }
             }
         };
 
-        const intervalId = setInterval(checkTaskStatus, 5000); // Polling interval of 5 seconds
+        const intervalId = setInterval(checkTaskStatus, 1000); // Polling interval of 1 second
 
         return () => {
             clearInterval(intervalId);
