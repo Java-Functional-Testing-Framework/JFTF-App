@@ -2,9 +2,10 @@ import {getCSRFToken} from "../auth/get-csrf-token.tsx";
 import axios from "axios";
 import {getTokenFromLocalStorage} from "../auth/get-token-local-storage.tsx";
 import {toast} from "react-toastify";
+import {enqueueTask} from "../../components/TestExecutionQueueOverlay";
 
 
-export async function executeTestCase(id: number, runner: string): Promise<string> {
+export async function executeTestCase(id: number, test_case_name: string, runner: string): Promise<string> {
     const csrfToken: string = getCSRFToken();
     const authToken: string = getTokenFromLocalStorage();
 
@@ -25,7 +26,8 @@ export async function executeTestCase(id: number, runner: string): Promise<strin
 
         // Extract the task ID from the response
         const taskID: string = response.data.task_id;
-        toast.success(`Test application with ID '${id}' execution successful: 'task_id' is '${taskID}'`);
+        toast.success(`Test application with name '${test_case_name}' execution successful: 'task_id' is '${taskID}'`);
+        enqueueTask(taskID);
 
         return taskID;
     } catch (error) {

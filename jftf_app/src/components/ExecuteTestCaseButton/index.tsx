@@ -12,7 +12,7 @@ const ExecuteTestCaseButton: React.FC<ExecuteTestCaseButtonProps> = ({label}) =>
     const handleClick = async () => {
         if (record) {
             // @ts-ignore
-            await executeTestCase(record.id, 'JftfDetachedRunner');
+            await executeTestCase(record.id, record.metaData.testName, 'JftfDetachedRunner');
         }
     };
 
