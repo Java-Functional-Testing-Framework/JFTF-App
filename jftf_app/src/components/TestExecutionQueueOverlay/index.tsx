@@ -39,16 +39,21 @@ const ToggleButton = styled(Fab)(({theme}) => ({
     zIndex: 10000,
 }));
 
-export let taskQueue: string[] = [];
-export let setTaskQueue: React.Dispatch<React.SetStateAction<string[]>> = () => {
+export interface Task {
+    id: string;
+    name: string;
+}
+
+export let taskQueue: Task[] = [];
+export let setTaskQueue: React.Dispatch<React.SetStateAction<Task[]>> = () => {
 };
 
-export const enqueueTask = (taskId: string) => {
-    setTaskQueue((prevQueue) => [...prevQueue, taskId]);
+export const enqueueTask = (taskId: string, taskName: string) => {
+    setTaskQueue((prevQueue) => [...prevQueue, {id: taskId, name: taskName}]);
 };
 
 export const dequeueTask = (taskId: string) => {
-    setTaskQueue((prevQueue) => prevQueue.filter((id) => id !== taskId));
+    setTaskQueue((prevQueue) => prevQueue.filter((task) => task.id !== taskId));
 };
 
 interface TaskQueueOverlayProps {
@@ -56,7 +61,7 @@ interface TaskQueueOverlayProps {
 }
 
 const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
-    const [localTaskQueue, setLocalTaskQueue] = useState<string[]>([]);
+    const [localTaskQueue, setLocalTaskQueue] = useState<Task[]>([]);
     const [isOverlayVisible, setIsOverlayVisible] = useState(true);
 
     useEffect(() => {
@@ -66,8 +71,8 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
 
     useEffect(() => {
         const checkTaskStatus = async () => {
-            for (const taskId of localTaskQueue) {
-                console.log(taskId);
+            for (const task of localTaskQueue) {
+                console.log(task.id, task.name);
             }
         };
 
@@ -93,14 +98,14 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
                 className={isOverlayVisible ? '' : 'hidden'}
             >
                 <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                    {localTaskQueue.map((taskId) => (
+                    {localTaskQueue.map((task) => (
                         <TaskBox
-                            key={taskId}
+                            key={task.id}
                             sx={{
                                 backgroundColor: theme.palette.grey[900],
                             }}
                         >
-                            {taskId}
+                            {task.name} ({task.id})
                         </TaskBox>
                     ))}
                     {localTaskQueue.length > 0 && <CircularProgress size={24}/>}
