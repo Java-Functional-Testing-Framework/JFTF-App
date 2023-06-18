@@ -1,17 +1,26 @@
-import { AppBar, ToggleThemeButton, TitlePortal } from 'react-admin';
-import { createTheme } from '@mui/material';
+import {AppBar, ToggleThemeButton, TitlePortal, Button} from 'react-admin';
+import {createTheme} from '@mui/material';
 
 export const darkTheme = createTheme({
-    palette: { mode: 'dark' },
+    palette: {mode: 'dark'},
 });
 
 const lightTheme = createTheme({
-    palette: { mode: 'light' },
+    palette: {mode: 'light'},
 });
 
-export const JftfAppDefaultAppBar = (props) => (
-    <AppBar>
-        <TitlePortal />
-        <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />
-    </AppBar>
-);
+export const JftfAppDefaultAppBar = (props) => {
+
+    const handleConfigurationButtonClick = () => {
+        window.open('http://localhost:8000/admin/constance/config/', '_blank');
+    };
+
+
+    return (
+        <AppBar>
+            <TitlePortal/>
+            <Button color="inherit" onClick={handleConfigurationButtonClick}>JFTF-Lib Configuration</Button>
+            <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme}/>
+        </AppBar>
+    );
+};
