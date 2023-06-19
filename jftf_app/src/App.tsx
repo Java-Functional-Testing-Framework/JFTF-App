@@ -10,6 +10,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from "react-toastify";
 import TaskQueueOverlay from "./components/TestExecutionQueueOverlay";
 import {ThemeProvider} from "@mui/material";
+import {TaskQueueAdminList} from "./resource-lists/task-queue-list.tsx";
+import {TaskResultInformationShow} from "./show-components/task-queue-information-show.tsx";
 
 
 const dataProvider = JFTFRestProvider('http://localhost:8000/api', fetchJsonWithAuthToken,);
@@ -23,6 +25,7 @@ const App = () => (
         <Admin theme={darkTheme} layout={JftfAppDefaultLayout} dataProvider={dataProvider}
                authProvider={authProvider}>
             <Resource name="test-case-admin" list={TestCaseAdminList} show={TestCaseMetadataShow}/>
+            <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}/>
         </Admin>
     </>
 );

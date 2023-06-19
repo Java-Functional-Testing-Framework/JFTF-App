@@ -19,7 +19,7 @@ export const JftfAppDefaultAppBar = (props) => {
     return (
         <AppBar>
             <TitlePortal/>
-            <Button color="inherit" onClick={handleConfigurationButtonClick}>JFTF-Lib Configuration</Button>
+            <Button color="inherit" onClick={handleConfigurationButtonClick} label={"JFTF-Lib Configuration"}></Button>
             <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme}/>
         </AppBar>
     );

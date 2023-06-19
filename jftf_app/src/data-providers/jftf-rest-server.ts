@@ -14,10 +14,17 @@ export default (
         const rangeEnd = page * perPage - 1;
 
         const query = {
-            sort: JSON.stringify([field, order]),
-            range: JSON.stringify([rangeStart, rangeEnd]),
+            perPage: perPage,
+            page: page,
             filter: JSON.stringify(params.filter),
         };
+
+        if (order === 'ASC') {
+            query.ordering = field;
+        } else if (order === 'DESC') {
+            query.ordering = `-${field}`;
+        }
+
         const url = `${apiUrl}/${resource}/?${stringify(query)}`;
         const options =
             countHeader === 'Content-Range'
