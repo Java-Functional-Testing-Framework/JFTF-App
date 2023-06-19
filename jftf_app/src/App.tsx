@@ -24,8 +24,10 @@ const App = () => (
         </ThemeProvider>
         <Admin theme={darkTheme} layout={JftfAppDefaultLayout} dataProvider={dataProvider}
                authProvider={authProvider}>
-            <Resource name="test-case-admin" list={TestCaseAdminList} show={TestCaseMetadataShow}/>
-            <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}/>
+            <Resource name="test-case-admin" list={TestCaseAdminList} show={TestCaseMetadataShow}
+                      options={{label: 'Test Applications'}}/>
+            <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}
+                      options={{label: 'Task Queue'}}/>
         </Admin>
     </>
 );
