@@ -8,8 +8,8 @@ export const TestCaseAdminList = () => (
     <List>
         <Datagrid>
             <TextField source="id"/>
-            <DateField source="firstExecution"/>
-            <DateField source="lastExecution"/>
+            <DateField source="firstExecution" showTime={true}/>
+            <DateField source="lastExecution" showTime={true}/>
             <BooleanField source="executed"/>
             <TestCaseMetadataShowButton label={"Test case metadata"}/>
             <ExecuteTestCaseButton label={"Execute test application"}/>
