@@ -20,7 +20,7 @@ interface TestApplicationTaskExecutionResult {
     meta: string;
 }
 
-export async function getTestApplicationExecutionTaskStatus(taskId: string): Promise<string> {
+export async function getTestApplicationExecutionTaskStatus(taskId: string): Promise<{ id: number, status: string }> {
     const authToken: string = getTokenFromLocalStorage();
     const url = `http://localhost:8000/api/test-case-result/?task_id=${taskId}`;
 
@@ -34,7 +34,8 @@ export async function getTestApplicationExecutionTaskStatus(taskId: string): Pro
         const response = await axios.get<TestApplicationTaskExecutionResult[]>(url,
             config);
         if (response.data.length > 0) {
-            return response.data[0].status;
+            const {id, status} = response.data[0];
+            return {id, status};
         } else {
             console.error(`Test application execution task with ID '${taskId}' not found!`);
         }

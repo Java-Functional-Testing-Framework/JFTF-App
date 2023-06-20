@@ -1,4 +1,5 @@
 import {Admin, Resource} from "react-admin";
+import {HashRouter} from 'react-router-dom';
 import JFTFRestProvider from './data-providers/jftf-rest-server.ts';
 import {authProvider} from "./auth-providers/jftf-auth-provider.ts";
 import {fetchJsonWithAuthToken} from 'ra-data-django-rest-framework';
@@ -18,17 +19,19 @@ const dataProvider = JFTFRestProvider('http://localhost:8000/api', fetchJsonWith
 
 const App = () => (
     <>
-        <ToastContainer/>
-        <ThemeProvider theme={darkTheme}>
-            <TaskQueueOverlay theme={darkTheme}/>
-        </ThemeProvider>
-        <Admin theme={darkTheme} layout={JftfAppDefaultLayout} dataProvider={dataProvider}
-               authProvider={authProvider}>
-            <Resource name="test-case-admin" list={TestCaseAdminList} show={TestCaseMetadataShow}
-                      options={{label: 'Test Applications'}}/>
-            <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}
-                      options={{label: 'Task Queue'}}/>
-        </Admin>
+        <HashRouter>
+            <ToastContainer/>
+            <ThemeProvider theme={darkTheme}>
+                <TaskQueueOverlay theme={darkTheme}/>
+            </ThemeProvider>
+            <Admin theme={darkTheme} layout={JftfAppDefaultLayout} dataProvider={dataProvider}
+                   authProvider={authProvider}>
+                <Resource name="test-case-admin" list={TestCaseAdminList} show={TestCaseMetadataShow}
+                          options={{label: 'Test Applications'}}/>
+                <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}
+                          options={{label: 'Task Queue'}}/>
+            </Admin>
+        </HashRouter>
     </>
 );
 

@@ -8,6 +8,7 @@ import {
     getTestApplicationExecutionTaskStatus
 } from "../../utils/api/get-test-application-execution-task-status-async.tsx";
 import {toast} from "react-toastify";
+import {useNavigate} from 'react-router-dom';
 
 const Overlay = styled('div')(({theme}) => ({
     position: 'fixed',
@@ -32,6 +33,7 @@ const TaskBox = styled('div')(({theme}) => ({
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
     borderRadius: '4px',
+    cursor: 'pointer',
 }));
 
 const ToggleButton = styled(Fab)(({theme}) => ({
@@ -67,6 +69,7 @@ interface TaskQueueOverlayProps {
 const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
     const [localTaskQueue, setLocalTaskQueue] = useState<Task[]>([]);
     const [isOverlayVisible, setIsOverlayVisible] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         taskQueue = localTaskQueue;
@@ -76,7 +79,7 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
     useEffect(() => {
         const checkTaskStatus = async () => {
             for (const task of localTaskQueue) {
-                const taskStatus = await getTestApplicationExecutionTaskStatus(task.id);
+                const taskStatus = (await getTestApplicationExecutionTaskStatus(task.id)).status;
 
                 if (taskStatus === 'SUCCESS') {
                     dequeueTask(task.id);
@@ -99,6 +102,11 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
         setIsOverlayVisible((prevState) => !prevState);
     };
 
+    const handleTaskBoxClick = async (taskId: string) => {
+        const id = (await getTestApplicationExecutionTaskStatus(taskId)).id;
+        navigate(`/test-case-result-admin/${id}/show`);
+    };
+
     if (localTaskQueue.length === 0) {
         return null; // Don't render the overlay if the queue is empty
     }
@@ -116,6 +124,7 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
                             sx={{
                                 backgroundColor: theme.palette.grey[900],
                             }}
+                            onClick={() => handleTaskBoxClick(task.id)}
                         >
                             {task.name} ({task.id})
                         </TaskBox>
