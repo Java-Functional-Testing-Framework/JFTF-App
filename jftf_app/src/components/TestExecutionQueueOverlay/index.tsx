@@ -36,6 +36,15 @@ const TaskBox = styled('div')(({theme}) => ({
     cursor: 'pointer',
 }));
 
+const Tag = styled('span')(({theme}) => ({
+    display: 'inline-block',
+    marginLeft: theme.spacing(1),
+    padding: '4px',
+    backgroundColor: theme.palette.warning.main,
+    color: theme.palette.warning.contrastText,
+    borderRadius: '4px',
+}));
+
 const ToggleButton = styled(Fab)(({theme}) => ({
     position: 'fixed',
     bottom: theme.spacing(2),
@@ -69,6 +78,7 @@ interface TaskQueueOverlayProps {
 const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
     const [localTaskQueue, setLocalTaskQueue] = useState<Task[]>([]);
     const [isOverlayVisible, setIsOverlayVisible] = useState(true);
+    const [taskStatusTags, setTaskStatusTags] = useState<Record<string, React.ReactNode>>({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -107,6 +117,36 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
         navigate(`/test-case-result-admin/${id}/show`);
     };
 
+    const getTaskStatusTag = async (taskId: string) => {
+        const taskStatus = (await getTestApplicationExecutionTaskStatus(taskId)).status;
+        if (taskStatus === 'PENDING') {
+            return <Tag>In progress</Tag>;
+        }
+        return null;
+    };
+
+
+    useEffect(() => {
+        const updateTaskStatusTags = async () => {
+            const tags: Record<string, React.ReactNode> = {};
+
+            for (const task of localTaskQueue) {
+                const taskStatusTag = await getTaskStatusTag(task.id);
+                tags[task.id] = taskStatusTag;
+            }
+
+            setTaskStatusTags(tags);
+        };
+
+        updateTaskStatusTags();
+
+        const intervalId = setInterval(updateTaskStatusTags, 1000);
+
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [localTaskQueue]);
+
     if (localTaskQueue.length === 0) {
         return null; // Don't render the overlay if the queue is empty
     }
@@ -127,6 +167,7 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
                             onClick={() => handleTaskBoxClick(task.id)}
                         >
                             {task.name} ({task.id})
+                            {taskStatusTags[task.id]}
                         </TaskBox>
                     ))}
                     {localTaskQueue.length > 0 && <CircularProgress size={24}/>}
