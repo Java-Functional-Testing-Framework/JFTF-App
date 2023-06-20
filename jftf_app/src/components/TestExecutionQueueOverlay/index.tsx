@@ -45,6 +45,16 @@ const Tag = styled('span')(({theme}) => ({
     borderRadius: '4px',
 }));
 
+const FailureTag = styled(Tag)(({theme}) => ({
+    color: theme.palette.error.contrastText,
+    backgroundColor: theme.palette.error.light,
+}));
+
+const SuccessTag = styled(Tag)(({theme}) => ({
+    color: theme.palette.success.contrastText,
+    backgroundColor: theme.palette.success.light,
+}));
+
 const ToggleButton = styled(Fab)(({theme}) => ({
     position: 'fixed',
     bottom: theme.spacing(2),
@@ -122,6 +132,12 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
         if (taskStatus === 'PENDING') {
             return <Tag>In progress</Tag>;
         }
+        if (taskStatus === 'FAILURE') {
+            return <FailureTag>Failed</FailureTag>;
+        }
+        if (taskStatus === 'SUCCESS') {
+            return <SuccessTag>Success</SuccessTag>;
+        }
         return null;
     };
 
@@ -140,7 +156,7 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
 
         updateTaskStatusTags();
 
-        const intervalId = setInterval(updateTaskStatusTags, 1000);
+        const intervalId = setInterval(updateTaskStatusTags, 100);
 
         return () => {
             clearInterval(intervalId);
