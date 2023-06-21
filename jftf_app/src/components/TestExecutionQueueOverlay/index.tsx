@@ -69,8 +69,8 @@ export interface Task {
     name: string;
 }
 
-export let taskQueue: Task[] = [];
-export let setTaskQueue: React.Dispatch<React.SetStateAction<Task[]>> = () => {
+let taskQueue: Task[] = JSON.parse(localStorage.getItem('taskQueue') || '[]');
+let setTaskQueue: React.Dispatch<React.SetStateAction<Task[]>> = () => {
 };
 
 export const enqueueTask = (taskId: string, taskName: string) => {
@@ -86,7 +86,7 @@ interface TaskQueueOverlayProps {
 }
 
 const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
-    const [localTaskQueue, setLocalTaskQueue] = useState<Task[]>([]);
+    const [localTaskQueue, setLocalTaskQueue] = useState<Task[]>(taskQueue);
     const [isOverlayVisible, setIsOverlayVisible] = useState(true);
     const [taskStatusTags, setTaskStatusTags] = useState<Record<string, React.ReactNode>>({});
     const navigate = useNavigate();
@@ -94,6 +94,7 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
     useEffect(() => {
         taskQueue = localTaskQueue;
         setTaskQueue = setLocalTaskQueue;
+        localStorage.setItem('taskQueue', JSON.stringify(localTaskQueue));
     }, [localTaskQueue]);
 
     useEffect(() => {
