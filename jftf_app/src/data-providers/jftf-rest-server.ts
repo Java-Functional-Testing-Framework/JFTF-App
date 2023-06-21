@@ -1,5 +1,5 @@
-import { stringify } from 'query-string';
-import { fetchUtils, DataProvider } from 'ra-core';
+import {stringify} from 'query-string';
+import {fetchUtils, DataProvider} from 'ra-core';
 
 export default (
     apiUrl: string,
@@ -7,17 +7,22 @@ export default (
     countHeader: string = 'Content-Range'
 ): DataProvider => ({
     getList: (resource, params) => {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const {page, perPage} = params.pagination;
+        const {field, order} = params.sort;
 
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
+        const searchValues = Object.values(params.filter);
+        const searchValue = searchValues.join(',');
 
         const query = {
             perPage: perPage,
             page: page,
-            filter: JSON.stringify(params.filter),
         };
+
+        if (searchValues.length > 0) {
+            query.search = searchValue;
+        }
 
         if (order === 'ASC') {
             query.ordering = field;
@@ -36,43 +41,43 @@ export default (
                 }
                 : {};
 
-        return httpClient(url, options).then(({ headers, json }) => {
+        return httpClient(url, options).then(({headers, json}) => {
             if (!headers.has(countHeader)) {
-                 throw new Error(
-                     `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
-                 );
+                throw new Error(
+                    `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
+                );
             }
             return {
                 data: json,
                 total:
                     countHeader === 'Content-Range'
-                    ? parseInt(
-                        headers.get('content-range').split('/').pop(),
-                        10
-                    )
-                    : parseInt(headers.get(countHeader.toLowerCase())),
+                        ? parseInt(
+                            headers.get('content-range').split('/').pop(),
+                            10
+                        )
+                        : parseInt(headers.get(countHeader.toLowerCase())),
             };
         });
     },
 
     getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}/`).then(({ json }) => ({
+        httpClient(`${apiUrl}/${resource}/${params.id}/`).then(({json}) => ({
             data: json,
         })),
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            filter: JSON.stringify({id: params.ids}),
         };
         const url = `${apiUrl}/${resource}/`;
         return httpClient(url, {
             method: 'GET',
-        }).then(({ json }) => ({ data: json }));
+        }).then(({json}) => ({data: json}));
     },
 
     getManyReference: (resource, params) => {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
+        const {page, perPage} = params.pagination;
+        const {field, order} = params.sort;
 
         const rangeStart = (page - 1) * perPage;
         const rangeEnd = page * perPage - 1;
@@ -96,7 +101,7 @@ export default (
                 }
                 : {};
 
-        return httpClient(url, options).then(({ headers, json }) => {
+        return httpClient(url, options).then(({headers, json}) => {
             if (!headers.has(countHeader)) {
                 throw new Error(
                     `The ${countHeader} header is missing in the HTTP Response. The simple REST data provider expects responses for lists of resources to contain this header with the total number of results to build the pagination. If you are using CORS, did you declare ${countHeader} in the Access-Control-Expose-Headers header?`
@@ -119,7 +124,7 @@ export default (
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json })),
+        }).then(({json}) => ({data: json})),
 
     // simple-rest doesn't handle provide an updateMany route, so we fallback to calling update n times instead
     updateMany: (resource, params) =>
@@ -130,20 +135,20 @@ export default (
                     body: JSON.stringify(params.data),
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({data: responses.map(({json}) => json.id)})),
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
             body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+        }).then(({json}) => ({
+            data: {...params.data, id: json.id},
         })),
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
-        }).then(({ json }) => ({ data: json })),
+        }).then(({json}) => ({data: json})),
 
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
     deleteMany: (resource, params) =>
@@ -153,5 +158,5 @@ export default (
                     method: 'DELETE',
                 })
             )
-        ).then(responses => ({ data: responses.map(({ json }) => json.id) })),
+        ).then(responses => ({data: responses.map(({json}) => json.id)})),
 });
