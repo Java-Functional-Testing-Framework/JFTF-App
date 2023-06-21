@@ -4,6 +4,7 @@ const TaskResultInformationShowButton = (props) => <ShowButton label="Show furth
 
 const postFilters = [
     <TextInput label="Task status" source="status"/>,
+    <TextInput label="Task Id" source="task_id"/>,
 ];
 
 export const TaskQueueAdminList = () => (

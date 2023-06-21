@@ -27,7 +27,7 @@ export const TestCaseAdminList = () => {
     const BulkActions = ({selectedIds}) => (
         <>
             <ExecuteBulkTestCasesButton selectedIds={selectedIds}/>
-            <BulkDeleteButton label="Delete" undoable={false}/>
+            <BulkDeleteButton label="Delete"/>
         </>
     );
 
