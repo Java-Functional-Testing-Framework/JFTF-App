@@ -104,10 +104,26 @@ const TaskQueueOverlay: React.FC<TaskQueueOverlayProps> = ({theme}) => {
 
                 if (taskStatus === 'SUCCESS') {
                     dequeueTask(task.id);
-                    toast.success(`Test application execution task '${task.name}' (${task.id}) completed successfully.`);
+
+                    const testNames = task.name.split(','); // Split the task names by comma (for multiple test application execution)
+
+                    if (testNames.length > 1) {
+                        toast.success(`Multiple test application execution task '${task.name}' (${task.id}) completed successfully.`);
+                    } else {
+                        toast.success(`Test application execution task '${task.name}' (${task.id}) completed successfully.`);
+                    }
                 } else if (taskStatus === 'FAILURE') {
                     dequeueTask(task.id);
-                    toast.error(`Test application execution task '${task.name}' (${task.id}) failed.`);
+
+                    const testNames = task.name.split(','); // Split the task names by comma (for multiple test application execution)
+
+                    if (testNames.length > 1) {
+                        const errorMessage = `Multiple test application execution task '${task.name}' (${task.id}) failed.`;
+                        toast.error(errorMessage);
+                    } else {
+                        const errorMessage = `Test application execution task '${task.name}' (${task.id}) failed.`;
+                        toast.error(errorMessage);
+                    }
                 }
             }
         };
