@@ -1,4 +1,14 @@
-import {ReferenceField, Datagrid, DateField, List, TextField, ShowButton, SelectField, TextInput} from 'react-admin';
+import {
+    ReferenceField,
+    Datagrid,
+    DateField,
+    List,
+    TextField,
+    ShowButton,
+    SelectField,
+    TextInput,
+    ChipField
+} from 'react-admin';
 
 const TestReportInformationShowButton = (props) => <ShowButton label="Show test report information"/>;
 
