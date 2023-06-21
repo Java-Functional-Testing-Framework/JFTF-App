@@ -7,9 +7,9 @@ const TestCaseMetadataShowTitle = () => {
 };
 
 export const TestCaseMetadataShow = (props) => (
-    <Show title={<TestCaseMetadataShowTitle />} {...props}>
+    <Show title={<TestCaseMetadataShowTitle/>} {...props}>
         <SimpleShowLayout>
-            <TextField source="metaData.metadataId" label={"TestCaseMetada ID"}/>
+            <TextField source="metaData.metadataId" label={"TestCaseMetadata ID"}/>
             <TextField source="metaData.testName" label={"Test case name"}/>
             <TextField source="metaData.featureGroup" label={"Feature group"}/>
             <TextField source="metaData.testGroup" label={"Test group"}/>

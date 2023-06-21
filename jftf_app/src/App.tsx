@@ -13,6 +13,7 @@ import TaskQueueOverlay from "./components/TestExecutionQueueOverlay";
 import {ThemeProvider} from "@mui/material";
 import {TaskQueueAdminList} from "./resource-lists/task-queue-list.tsx";
 import {TaskResultInformationShow} from "./show-components/task-queue-information-show.tsx";
+import {TestReportAdminList} from "./resource-lists/test-report-list.tsx";
 
 
 const dataProvider = JFTFRestProvider('http://localhost:8000/api', fetchJsonWithAuthToken,);
@@ -30,6 +31,8 @@ const App = () => (
                           options={{label: 'Test Applications'}}/>
                 <Resource name="test-case-result-admin" list={TaskQueueAdminList} show={TaskResultInformationShow}
                           options={{label: 'Task Queue'}}/>
+                <Resource name="test-report-admin" list={TestReportAdminList}
+                          options={{label: 'Test Reports'}}/>
             </Admin>
         </HashRouter>
     </>
