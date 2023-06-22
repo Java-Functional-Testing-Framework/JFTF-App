@@ -39,6 +39,8 @@ export const TestCaseAdminList = () => {
                 <ChipField source="metaData.testGroup" label={"Test group"} sortable={false} sx={{fontWeight: "bold"}}/>
                 <ChipField source="metaData.featureGroup" label={"Feature group"} sortable={false}
                            sx={{fontWeight: "bold"}}/>
+                <ChipField source="metaData.testVersion" label={"Test version"} sortable={false}
+                           sx={{fontWeight: "bold"}}/>
                 <DateField source="firstExecution" showTime={true}/>
                 <DateField source="lastExecution" showTime={true}/>
                 <BooleanField source="executed"/>
