@@ -9,6 +9,7 @@ import {
     TextInput,
     ChipField
 } from 'react-admin';
+import GenerateTestReportButton from "../components/GenerateTestReportButton";
 
 const TestReportInformationShowButton = (props) => <ShowButton label="Show test report information"/>;
 
@@ -36,6 +37,7 @@ export const TestReportAdminList = (props) => (
             <DateField source="testReportInformation.endTimestamp" showTime={true} label={"Execution end timestamp"}/>
             <TextField source="testReportInformation.testDuration" label={"Execution duration"}/>
             <TestReportInformationShowButton label={"Test report information"}/>
+            <GenerateTestReportButton label={"Generate test report"}/>
         </Datagrid>
     </List>
 );
