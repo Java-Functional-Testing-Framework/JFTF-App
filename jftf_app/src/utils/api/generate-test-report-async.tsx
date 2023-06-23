@@ -18,7 +18,7 @@ export async function generateTestReport(reportId: number): Promise<void> {
             responseType: 'blob' // Set the response type to 'blob' to handle binary data
         });
 
-        const contentDisposition = 'attachment; filename=test_report_JftfDemosLiveExample_Id_190.html';
+        const contentDisposition = response.headers['content-disposition'];
         const matches = contentDisposition.match(/filename=([^;]+)/);
 
         let filename = `test_report_${reportId}.html`;
