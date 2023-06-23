@@ -1,4 +1,4 @@
-import {Datagrid, RichTextField, List, TextField, ShowButton, DateField, TextInput} from 'react-admin';
+import {Datagrid, List, TextField, ShowButton, DateField, TextInput} from 'react-admin';
 
 const TaskResultInformationShowButton = (props) => <ShowButton label="Show further task result information"/>;
 
@@ -16,7 +16,7 @@ export const TaskQueueAdminList = () => (
             <TextField source="status" label={"Task status"} sx={{fontWeight: "bold"}}/>
             <DateField source="date_created" showTime={true}/>
             <DateField source="date_done" showTime={true}/>
-            <RichTextField source="task_args" label={"Task arguments"} sortable={false}/>
+            <TextField source="task_args" label={"Task arguments"} sortable={false}/>
             <TaskResultInformationShowButton label={"Task result information"}/>
         </Datagrid>
     </List>

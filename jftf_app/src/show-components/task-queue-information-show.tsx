@@ -1,4 +1,4 @@
-import {Show, TabbedShowLayout, Tab, TextField, RichTextField, useRecordContext} from 'react-admin';
+import {Show, TabbedShowLayout, Tab, TextField, useRecordContext} from 'react-admin';
 
 const TaskResultInformationShowTitle = () => {
     const record = useRecordContext();
@@ -10,8 +10,8 @@ export const TaskResultInformationShow = (props) => (
     <Show title={<TaskResultInformationShowTitle/>} {...props}>
         <TabbedShowLayout>
             <Tab label="Result">
-                <RichTextField source="result" label="Task Result"
-                               style={{wordBreak: 'break-word', whiteSpace: 'pre-line'}}/>
+                <TextField source="result" label="Task Result"
+                           style={{wordBreak: 'break-word', whiteSpace: 'pre-line'}}/>
             </Tab>
             <Tab label="Other Task Information">
                 <TextField source="task_name" label="Task Name"/>
